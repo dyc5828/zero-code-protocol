@@ -1,0 +1,14 @@
+{
+  "name": "zero-code-protocol",
+  "owner": {
+    "name": "dyc5828"
+  },
+  "plugins": [
+    {
+      "name": "zero",
+      "source": "./",
+      "description": "Zero CODE Protocol - multi-agent task orchestration (Capture, Orchestrate, Dispatch, Execute)",
+      "version": "1.0.0"
+    }
+  ]
+}
