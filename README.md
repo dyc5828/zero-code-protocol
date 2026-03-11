@@ -43,7 +43,7 @@ You coding -> idea comes up -> /later "refactor auth module"
 Works with Claude Code, Cursor, Codex, GitHub Copilot, Windsurf, Gemini CLI, and [30+ other tools](https://agentskills.io):
 
 ```bash
-npx skills add danielchen/zero-code-protocol
+npx skills add dyc5828/zero-code-protocol
 ```
 
 Installs 4 core skills: `/later`, `/next`, `/do`, `todo-store`.
@@ -51,7 +51,7 @@ Installs 4 core skills: `/later`, `/next`, `/do`, `todo-store`.
 ### Claude Code Plugin
 
 ```bash
-/plugin marketplace add danielchen/zero-code-protocol
+/plugin marketplace add dyc5828/zero-code-protocol
 /plugin install zero-code
 ```
 
@@ -60,7 +60,7 @@ This also installs the ZERO agent (protocol guide) from `agents/zero.md`.
 ### Manual Clone
 
 ```bash
-git clone https://github.com/danielchen/zero-code-protocol.git
+git clone https://github.com/dyc5828/zero-code-protocol.git
 cd zero-code-protocol
 
 # Symlink skills to your tool's skill directory
@@ -78,7 +78,7 @@ ln -s "$(pwd)/agents/zero.md" ~/.claude/agents/zero.md
 If your tool supports skills but not agents:
 
 ```bash
-npx skills add danielchen/zero-code-protocol -s zero --skill-path protocol/zero
+npx skills add dyc5828/zero-code-protocol -s zero --skill-path protocol/zero
 ```
 
 ## Quick Start
