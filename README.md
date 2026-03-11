@@ -45,10 +45,10 @@ You coding -> idea comes up -> /later "refactor auth module"
 /plugin marketplace add dyc5828/zero-code-protocol
 
 # Install the plugin
-/plugin install zero-code
+/plugin install zero
 ```
 
-Installs all 4 skills + the ZERO protocol guide agent. Skills are namespaced as `/zero-code:later`, `/zero-code:next`, `/zero-code:do`.
+Installs all 4 skills + the ZERO protocol guide agent. Skills are namespaced as `/zero:later`, `/zero:next`, `/zero:do`.
 
 ### Other Options
 

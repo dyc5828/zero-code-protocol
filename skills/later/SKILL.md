@@ -17,7 +17,7 @@ This document uses bare names (`/later`, `/next`, `/do`) for readability. Your i
 | Install Method | Invocation |
 |----------------|------------|
 | Symlink or `npx skills add` | `/later`, `/next`, `/do` |
-| Claude Code plugin | `/zero-code:later`, `/zero-code:next`, `/zero-code:do` |
+| Claude Code plugin | `/zero:later`, `/zero:next`, `/zero:do` |
 
 ## When to Use
 
