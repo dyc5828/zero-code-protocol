@@ -48,7 +48,7 @@ You coding -> idea comes up -> /later "refactor auth module"
 /plugin install zero
 ```
 
-Installs all 4 skills + the ZERO protocol guide agent. Skills are namespaced as `/zero:later`, `/zero:next`, `/zero:do`.
+Installs all 4 skills (`/zero:later`, `/zero:next`, `/zero:do`, `/zero:todo-store`) plus the ZERO agent — a protocol guide that teaches, troubleshoots, and helps maintain the system.
 
 ### Other Options
 
@@ -61,9 +61,9 @@ Works with Cursor, Codex, GitHub Copilot, Windsurf, Gemini CLI, and [30+ other t
 npx skills add dyc5828/zero-code-protocol
 ```
 
-Installs 4 core skills with bare names (`/later`, `/next`, `/do`). Does not include the ZERO agent.
+Installs 4 core skills with bare names (`/later`, `/next`, `/do`).
 
-To also get the ZERO protocol guide (for tools without agent support):
+To also install the ZERO protocol guide as a skill:
 ```bash
 npx skills add dyc5828/zero-code-protocol -s zero --skill-path protocol/zero
 ```
@@ -71,7 +71,7 @@ npx skills add dyc5828/zero-code-protocol -s zero --skill-path protocol/zero
 </details>
 
 <details>
-<summary><strong>Manual clone + symlink</strong></summary>
+<summary><strong>Manual clone + symlink (Claude Code)</strong></summary>
 
 ```bash
 git clone https://github.com/dyc5828/zero-code-protocol.git
