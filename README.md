@@ -38,48 +38,56 @@ You coding -> idea comes up -> /later "refactor auth module"
 
 ## Install
 
-### Cross-Tool (Agent Skills spec)
+Three install methods — choose based on your tool and preferences:
 
-Works with Claude Code, Cursor, Codex, GitHub Copilot, Windsurf, Gemini CLI, and [30+ other tools](https://agentskills.io):
+| Method | Tools | Skill Names | ZERO Agent | Best For |
+|--------|-------|-------------|------------|----------|
+| **npx skills** | Claude Code, Cursor, Codex, Copilot, Windsurf, Gemini CLI, [30+ tools](https://agentskills.io) | `/later`, `/next`, `/do` | No (add separately) | Cross-tool, bare skill names |
+| **Claude Code plugin** | Claude Code | `/zero-code:later`, `/zero-code:next`, `/zero-code:do` | Yes (auto-discovered) | Full package with agent |
+| **Manual symlink** | Claude Code | `/later`, `/next`, `/do` | Yes (if symlinked) | Single source of truth, bare names |
+
+### Option 1: npx skills (Cross-Tool)
 
 ```bash
 npx skills add dyc5828/zero-code-protocol
 ```
 
-Installs 4 core skills: `/later`, `/next`, `/do`, `todo-store`.
+Installs 4 core skills with bare names. Works with any [Agent Skills](https://agentskills.io)-compatible tool.
 
-### Claude Code Plugin
+To also get the ZERO protocol guide (for tools without agent support):
+```bash
+npx skills add dyc5828/zero-code-protocol -s zero --skill-path protocol/zero
+```
+
+### Option 2: Claude Code Plugin
 
 ```bash
+# Add the repo as a marketplace source
 /plugin marketplace add dyc5828/zero-code-protocol
+
+# Install the plugin
 /plugin install zero-code
 ```
 
-This also installs the ZERO agent (protocol guide) from `agents/zero.md`.
+Installs all 4 skills + the ZERO agent. Skills are **namespaced** as `/zero-code:later`, `/zero-code:next`, `/zero-code:do` to avoid conflicts with other plugins. The skills reference each other correctly regardless of namespace.
 
-### Manual Clone
+### Option 3: Manual Symlink
 
 ```bash
 git clone https://github.com/dyc5828/zero-code-protocol.git
 cd zero-code-protocol
 
-# Symlink skills to your tool's skill directory
+# Symlink skills (bare names)
 ln -s "$(pwd)/skills/later" ~/.claude/skills/later
 ln -s "$(pwd)/skills/next" ~/.claude/skills/next
 ln -s "$(pwd)/skills/do" ~/.claude/skills/do
 ln -s "$(pwd)/skills/todo-store" ~/.claude/skills/todo-store
 
-# Optionally install the ZERO agent (Claude Code)
+# Symlink ZERO agent
 ln -s "$(pwd)/agents/zero.md" ~/.claude/agents/zero.md
 ```
 
-### ZERO Protocol Guide (for tools without agent support)
-
-If your tool supports skills but not agents:
-
-```bash
-npx skills add dyc5828/zero-code-protocol -s zero --skill-path protocol/zero
-```
+Gives bare skill names + the ZERO agent. Edits to the repo update your local install (symlinks point to source). Best for contributors and power users.
 
 ## Quick Start
 

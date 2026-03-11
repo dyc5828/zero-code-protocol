@@ -10,6 +10,15 @@ metadata:
 
 The brain of the **Zero CODE** protocol - analyzes tasks, dispatches agents, coordinates completion. Handles both **O**rchestrate and **D**ispatch in the CODE flow.
 
+## Skill Names
+
+This document uses bare names (`/later`, `/next`, `/do`) for readability. Your invocation depends on install method:
+
+| Install Method | Invocation |
+|----------------|------------|
+| Symlink or `npx skills add` | `/later`, `/next`, `/do` |
+| Claude Code plugin | `/zero-code:later`, `/zero-code:next`, `/zero-code:do` |
+
 ## When to Use
 
 - Ready to work through task backlog
@@ -334,7 +343,7 @@ Write your verification plan now, execute it after implementation.
 
 Do what the task asks, nothing more. Don't scope-creep.
 
-If you notice other issues, capture them with `/later` - don't fix them now.
+If you notice other issues, capture them as TODO files (see step 7) - don't fix them now.
 
 ### 4. Verify Your Work
 
@@ -366,9 +375,29 @@ Stop servers you started, release ports, remove temp files.
 
 ### 7. Capture Follow-Ups
 
-If you noticed out-of-scope issues:
+If you noticed out-of-scope issues, write them directly to the TODO store (you don't have the `/later` skill - you're a fresh sub-agent):
+
 ```bash
-/later "Noticed: [issue] while working on [task]" --tag follow-up
+# Detect TODO location
+BASE=$(git worktree list --porcelain 2>/dev/null | grep '^worktree ' | head -1 | cut -d' ' -f2)
+BASE="${BASE:-.}"
+TODO_DIR="${BASE}/TODO"
+mkdir -p "${TODO_DIR}"
+
+# Write follow-up task
+cat > "${TODO_DIR}/followup-[descriptive-name].md" << 'TASK'
+---
+tags: [follow-up]
+---
+
+# [Title]
+
+## Context
+Noticed while working on [current task]: [what you observed]
+
+## Task
+[What needs to be done]
+TASK
 ```
 
 ### 8. Report Completion
@@ -405,7 +434,7 @@ Examples:
 
 **IMPORTANT:**
 - Do NOT push, create PR, or archive. Orchestrator handles integration.
-- Do NOT scope-creep. Capture out-of-scope items via /later.
+- Do NOT scope-creep. Capture out-of-scope items as TODO files (see step 7).
 - Report status accurately. "partial" if some things worked. "failed" if nothing worked.
 ```
 

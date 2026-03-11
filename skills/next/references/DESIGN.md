@@ -127,6 +127,12 @@ The agent must write a verification plan before implementing, then execute it af
 
 The TODO is a handoff document. The dispatch prompt is a contract.
 
+### Why Direct TODO Writes in Dispatch Prompts (Not /later)?
+
+Sub-agents spawned via Task tool are fresh instances with no skills loaded. They cannot invoke `/later`. The dispatch template gives them the raw equivalent: detect the TODO directory and write a markdown file directly. This is what `/later` does internally via `todo-store` anyway.
+
+This means the dispatch prompt is self-contained - sub-agents don't depend on any skill being installed to follow the complete protocol.
+
 ### Why Auto-Dispatch by Default?
 
 When a user runs `/next`, they're explicitly choosing to work through the backlog. Asking "should I start?" adds unnecessary friction.

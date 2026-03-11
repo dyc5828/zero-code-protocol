@@ -10,6 +10,15 @@ metadata:
 
 The hands of the **Zero CODE** protocol - executes a single task with worktree isolation. Handles the **E**xecute step in the CODE flow.
 
+## Skill Names
+
+This document uses bare names (`/later`, `/next`, `/do`) for readability. Your invocation depends on install method:
+
+| Install Method | Invocation |
+|----------------|------------|
+| Symlink or `npx skills add` | `/later`, `/next`, `/do` |
+| Claude Code plugin | `/zero-code:later`, `/zero-code:next`, `/zero-code:do` |
+
 ## When to Use
 
 - **Manual mode:** User wants to work on a single task themselves

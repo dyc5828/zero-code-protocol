@@ -10,6 +10,15 @@ metadata:
 
 Captures deferred tasks as TODO files that serve as prompts for future Claude agents. Part of the **Zero CODE** protocol (Capture -> Orchestrate -> Dispatch -> Execute).
 
+## Skill Names
+
+This document uses bare names (`/later`, `/next`, `/do`) for readability. Your invocation depends on install method:
+
+| Install Method | Invocation |
+|----------------|------------|
+| Symlink or `npx skills add` | `/later`, `/next`, `/do` |
+| Claude Code plugin | `/zero-code:later`, `/zero-code:next`, `/zero-code:do` |
+
 ## When to Use
 
 - User wants to capture something for later
