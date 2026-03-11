@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zero C.O.D.E. Protocol - System Architecture</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      color: #e4e4e4;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #f093fb, #f5576c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #888;
+      margin-bottom: 40px;
+      font-size: 1.1rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .skill-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid;
+      border-radius: 16px;
+      padding: 24px;
+      min-width: 280px;
+      max-width: 320px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .skill-box:hover {
+      transform: translateY(-5px);
+    }
+
+    .skill-box.later {
+      border-color: #4ecdc4;
+      box-shadow: 0 4px 20px rgba(78, 205, 196, 0.2);
+    }
+
+    .skill-box.later:hover {
+      box-shadow: 0 8px 30px rgba(78, 205, 196, 0.3);
+    }
+
+    .skill-box.next {
+      border-color: #f093fb;
+      box-shadow: 0 4px 20px rgba(240, 147, 251, 0.2);
+    }
+
+    .skill-box.next:hover {
+      box-shadow: 0 8px 30px rgba(240, 147, 251, 0.3);
+    }
+
+    .skill-box.do {
+      border-color: #f5576c;
+      box-shadow: 0 4px 20px rgba(245, 87, 108, 0.2);
+    }
+
+    .skill-box.do:hover {
+      box-shadow: 0 8px 30px rgba(245, 87, 108, 0.3);
+    }
+
+    .skill-name {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .skill-name.later { color: #4ecdc4; }
+    .skill-name.next { color: #f093fb; }
+    .skill-name.do { color: #f5576c; }
+
+    .skill-role {
+      font-size: 0.9rem;
+      color: #888;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .skill-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #ccc;
+    }
+
+    .does-list {
+      margin-top: 12px;
+      padding-left: 20px;
+    }
+
+    .does-list li {
+      margin: 6px 0;
+      color: #aaa;
+    }
+
+    .flow-section {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 20px;
+      padding: 40px;
+      margin-top: 40px;
+    }
+
+    .flow-title {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+      color: #f093fb;
+    }
+
+    .flow-diagram {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .step-number.later { background: rgba(78, 205, 196, 0.2); color: #4ecdc4; }
+    .step-number.next { background: rgba(240, 147, 251, 0.2); color: #f093fb; }
+    .step-number.do { background: rgba(245, 87, 108, 0.2); color: #f5576c; }
+
+    .step-content {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 16px 20px;
+      border-radius: 12px;
+      border-left: 3px solid;
+    }
+
+    .step-content.later { border-color: #4ecdc4; }
+    .step-content.next { border-color: #f093fb; }
+    .step-content.do { border-color: #f5576c; }
+
+    .step-label {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .step-desc {
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    .arrow {
+      text-align: center;
+      color: #555;
+      font-size: 1.5rem;
+    }
+
+    .principles-section {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .principle {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .principle h3 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: #f093fb;
+    }
+
+    .principle p {
+      font-size: 0.9rem;
+      color: #999;
+      line-height: 1.5;
+    }
+
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+    }
+
+    .legend-color.later { background: #4ecdc4; }
+    .legend-color.next { background: #f093fb; }
+    .legend-color.do { background: #f5576c; }
+
+    /* Foundation layer */
+    .foundation-section {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .foundation-connector {
+      display: flex;
+      justify-content: center;
+      gap: 80px;
+      margin-bottom: 8px;
+    }
+
+    .connector-line {
+      width: 2px;
+      height: 20px;
+      background: linear-gradient(to bottom, transparent, #667);
+    }
+
+    .foundation-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(102, 102, 119, 0.15);
+      border: 1px dashed #667;
+      border-radius: 8px;
+      padding: 12px 24px;
+    }
+
+    .foundation-icon {
+      font-size: 1.2rem;
+    }
+
+    .foundation-label {
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    .foundation-name {
+      color: #aaa;
+      font-weight: 600;
+      font-family: 'SF Mono', Monaco, monospace;
+    }
+
+    .foundation-desc {
+      color: #666;
+      font-size: 0.8rem;
+    }
+
+    .worktree-diagram {
+      margin-top: 40px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 20px;
+      padding: 40px;
+    }
+
+    .worktree-title {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+      color: #4ecdc4;
+    }
+
+    .worktree-chain {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .worktree-node {
+      text-align: center;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      min-width: 150px;
+    }
+
+    .worktree-node.main {
+      border: 2px solid #666;
+    }
+
+    .worktree-node.task-a {
+      border: 2px solid #4ecdc4;
+    }
+
+    .worktree-node.task-b {
+      border: 2px solid #f5576c;
+    }
+
+    .worktree-label {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .worktree-base {
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    .chain-arrow {
+      font-size: 2rem;
+      color: #555;
+    }
+
+    @media (max-width: 768px) {
+      .row {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .skill-box {
+        max-width: 100%;
+      }
+
+      .flow-step {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .worktree-chain {
+        flex-direction: column;
+      }
+
+      .chain-arrow {
+        transform: rotate(90deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Zero C.O.D.E.</h1>
+    <p class="subtitle">Capture · Orchestrate · Dispatch · Execute</p>
+
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-color later"></div>
+        <span>/later - Capture</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color next"></div>
+        <span>/next - Orchestrate</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color do"></div>
+        <span>/do - Execute</span>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <div class="row">
+        <div class="skill-box later">
+          <div class="skill-name later">/later</div>
+          <div class="skill-role">Inbox</div>
+          <div class="skill-desc">
+            Captures deferred work as TODO files for future agents.
+            <ul class="does-list">
+              <li>Write tasks to TODO/</li>
+              <li>Structure task format</li>
+              <li>Detect worktree base</li>
+              <li>Ask for task details</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="skill-box next">
+          <div class="skill-name next">/next</div>
+          <div class="skill-role">Orchestrator</div>
+          <div class="skill-desc">
+            The brain - analyzes, dispatches, coordinates.
+            <ul class="does-list">
+              <li>Build dependency graph</li>
+              <li>Dispatch agents one at a time</li>
+              <li>Receive completion reports</li>
+              <li>Decide integration strategy</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="skill-box do">
+          <div class="skill-name do">/do</div>
+          <div class="skill-role">Executor</div>
+          <div class="skill-desc">
+            The hands - executes tasks in worktrees.
+            <ul class="does-list">
+              <li>Create worktree</li>
+              <li>Execute task requirements</li>
+              <li>Verify own work</li>
+              <li>Report completion</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shared Foundation -->
+      <div class="foundation-section">
+        <div class="foundation-connector">
+          <div class="connector-line"></div>
+          <div class="connector-line"></div>
+          <div class="connector-line"></div>
+        </div>
+        <div class="foundation-box">
+          <span class="foundation-icon">⬡</span>
+          <div class="foundation-label">
+            <span class="foundation-name">todo-store</span>
+            <span class="foundation-desc"> · shared storage abstraction (TODO/, tasks/, todo.md...)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-section">
+      <h2 class="flow-title">Task Lifecycle Flow</h2>
+      <div class="flow-diagram">
+        <div class="flow-step">
+          <div class="step-number later">1</div>
+          <div class="step-content later">
+            <div class="step-label">/later captures work</div>
+            <div class="step-desc">User defers a task → written to TODO/ with context</div>
+          </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <div class="flow-step">
+          <div class="step-number next">2</div>
+          <div class="step-content next">
+            <div class="step-label">/next analyzes tasks</div>
+            <div class="step-desc">Reads TODO/, builds dependency graph, identifies available work</div>
+          </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <div class="flow-step">
+          <div class="step-number next">3</div>
+          <div class="step-content next">
+            <div class="step-label">/next dispatches first task</div>
+            <div class="step-desc">Picks best available task, launches agent with Task tool</div>
+          </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <div class="flow-step">
+          <div class="step-number do">4</div>
+          <div class="step-content do">
+            <div class="step-label">/do agents execute</div>
+            <div class="step-desc">Each agent: creates worktree → does work → commits → reports back</div>
+          </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <div class="flow-step">
+          <div class="step-number next">5</div>
+          <div class="step-content next">
+            <div class="step-label">/next receives completion</div>
+            <div class="step-desc">Agent finishes, reports back with structured data</div>
+          </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <div class="flow-step">
+          <div class="step-number next">6</div>
+          <div class="step-content next">
+            <div class="step-label">/next reevaluates and dispatches next</div>
+            <div class="step-desc">Archives completed task, updates graph, picks next best task (may be newly unblocked work building on predecessor)</div>
+          </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <div class="flow-step">
+          <div class="step-number next">7</div>
+          <div class="step-content next">
+            <div class="step-label">/next handles integration</div>
+            <div class="step-desc">Chooses strategy (PR-per-task, PR-per-chain, merge) based on context</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="worktree-diagram">
+      <h2 class="worktree-title">Worktree Chaining</h2>
+      <p style="text-align: center; color: #888; margin-bottom: 30px;">
+        Dependent tasks build on predecessor's worktree, not main
+      </p>
+      <div class="worktree-chain">
+        <div class="worktree-node main">
+          <div class="worktree-label">main</div>
+          <div class="worktree-base">base branch</div>
+        </div>
+        <div class="chain-arrow">→</div>
+        <div class="worktree-node task-a">
+          <div class="worktree-label">wt-task-a</div>
+          <div class="worktree-base">base: main</div>
+        </div>
+        <div class="chain-arrow">→</div>
+        <div class="worktree-node task-b">
+          <div class="worktree-label">wt-task-b</div>
+          <div class="worktree-base">base: wt-task-a</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="principles-section">
+      <div class="principle">
+        <h3>Concurrent Execution, Sequential Decisions</h3>
+        <p>Orchestrator evaluates → picks ONE task → dispatches. Agents run concurrently, but decisions are sequential and dynamic. Not batch/wave dispatch.</p>
+      </div>
+      <div class="principle">
+        <h3>Intelligent Integration</h3>
+        <p>Strategy chosen based on context: PR-per-task for teams, PR-per-chain for related work, direct merge for solo dev.</p>
+      </div>
+      <div class="principle">
+        <h3>Multi-Agent Awareness</h3>
+        <p>Agents check for resource conflicts, isolate test environments, and clean up after verification.</p>
+      </div>
+      <div class="principle">
+        <h3>Self-Improvement</h3>
+        <p>Skills update CLAUDE.md and memory files directly when issues are found. Larger changes captured via /later --tag meta.</p>
+      </div>
+      <div class="principle">
+        <h3>Clear Handoffs</h3>
+        <p>/later → TODO/, /next reads TODO/, /next dispatches /do, /do reports back, /next archives to .done/</p>
+      </div>
+      <div class="principle">
+        <h3>Graceful Degradation</h3>
+        <p>If permissions are blocked, agents stop and report. User is informed via orchestrator.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
